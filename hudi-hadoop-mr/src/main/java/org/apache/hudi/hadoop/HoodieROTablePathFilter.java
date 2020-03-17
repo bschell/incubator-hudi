@@ -66,7 +66,7 @@ public class HoodieROTablePathFilter implements PathFilter, Serializable {
   /**
    * Hadoop configurations for the FileSystem.
    */
-  private Configuration conf;
+  private transient Configuration conf;
 
   private transient FileSystem fs;
 
