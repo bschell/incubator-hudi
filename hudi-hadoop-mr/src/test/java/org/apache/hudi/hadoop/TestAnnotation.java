@@ -18,6 +18,7 @@
 
 package org.apache.hudi.hadoop;
 
+import org.apache.hudi.hadoop.realtime.HoodieParquetRealtimeInputFormat;
 import org.junit.Test;
 
 import java.lang.annotation.Annotation;
@@ -27,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 public class TestAnnotation {
 
   @Test
-  public void testAnnotation() {
+  public void testHoodieParquetInputFormatAnnotation() {
     assertTrue(HoodieParquetInputFormat.class.isAnnotationPresent(UseFileSplitsFromInputFormat.class));
     Annotation[] annotations = HoodieParquetInputFormat.class.getAnnotations();
     boolean found = false;
@@ -37,5 +38,24 @@ public class TestAnnotation {
       }
     }
     assertTrue(found);
+  }
+
+  @Test
+  public void testHoodieParquetRealtimeInputFormatAnnotations() {
+    assertTrue(HoodieParquetRealtimeInputFormat.class.isAnnotationPresent(UseFileSplitsFromInputFormat.class));
+    assertTrue(HoodieParquetRealtimeInputFormat.class.isAnnotationPresent(UseRecordReaderFromInputFormat.class));
+    Annotation[] annotations = HoodieParquetRealtimeInputFormat.class.getAnnotations();
+    boolean foundFileSplitsAnnotation = false;
+    boolean foundRecordReaderAnnotation = false;
+    for (Annotation annotation : annotations) {
+      if ("UseFileSplitsFromInputFormat".equals(annotation.annotationType().getSimpleName())) {
+        foundFileSplitsAnnotation = true;
+      }
+      if ("UseRecordReaderFromInputFormat".equals(annotation.annotationType().getSimpleName())) {
+        foundRecordReaderAnnotation = true;
+      }
+    }
+    assertTrue(foundFileSplitsAnnotation);
+    assertTrue(foundRecordReaderAnnotation);
   }
 }
